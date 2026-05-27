@@ -3,19 +3,16 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 
 const About = () => {
   return (
-    <section id="about" className="about-section">
+    <section id="about" className="about-section" data-theme="light">
       <div className="about-wrapper">
         {/* Left side - Text content */}
         <div className="about-left">
           <div className="about-badge">ABOUT US</div>
-          <h2 className="about-heading">About our firm</h2>
+          <h2 className="about-heading">About Nilebyte</h2>
           <p className="about-description">
-            At our firm, we pride ourselves on delivering tailored solutions
-            that empower businesses to thrive. With years of experience
-            across various industries, our dedicated team is committed to
-            driving growth and operational excellence.
+            Nilebyte is a technical solutions agency that builds the systems businesses actually need — custom software, AI automations, and intelligent workflows engineered to eliminate manual work and accelerate growth. <br />We don't template. We architect.
           </p>
-          
+
           <div className="about-contact-list">
             <div className="contact-row">
               <div className="contact-icon-wrapper"><Mail size={20} /></div>
@@ -31,19 +28,19 @@ const About = () => {
             </div>
           </div>
           <div className="about-stats-divider"></div>
-          
+
           <div className="about-stats">
             <div className="stat-item">
-              <h3>95%</h3>
-              <p>Complete customer<br/>satisfaction</p>
+              <h3>20+</h3>
+              <p>Projects Delivered<br />across multiple industries</p>
             </div>
             <div className="stat-item">
               <h3>10+</h3>
-              <p>Innovation and<br/>valuable insight</p>
+              <p>Satisfied Clients from<br />from around the world</p>
             </div>
             <div className="stat-item">
-              <h3>$10m</h3>
-              <p>Highly efficient<br/>financial strategies</p>
+              <h3>24/7</h3>
+              <p>Always Available to<br />support your business</p>
             </div>
           </div>
         </div>
