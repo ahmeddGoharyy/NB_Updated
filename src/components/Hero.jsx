@@ -21,12 +21,7 @@ const Hero = ({ loading }) => {
         {/* Background */}
         <div className="hero-bg"></div>
 
-        {/* Moon placeholder/wrapper inside hero section to serve as starting size/position context */}
-        <div className="hero-moon-sky">
-          <div className="moon-wrapper">
-            <img src="/moon3.png" alt="Moon" className="moon-image" />
-          </div>
-        </div>
+
 
         <div className="hero-cosmic-container">
           <div className="hero-layout">

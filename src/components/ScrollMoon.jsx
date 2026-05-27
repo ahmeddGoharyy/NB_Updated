@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const ScrollMoon = () => {
-  const moonRef = useRef(null);
+  const terminalRef = useRef(null);
   const [ready, setReady] = useState(true);
-  const [showTyping, setShowTyping] = useState(false);
   const [typedText, setTypedText] = useState('');
 
   useEffect(() => {
-    const moon = moonRef.current;
-    if (!moon) return;
+    const term = terminalRef.current;
+    if (!term) return;
 
     let rafId = null;
 
@@ -34,43 +33,36 @@ const ScrollMoon = () => {
       const rawProgress = (scrollY - wrapperTop) / scrollRange;
       const heroProgress = Math.min(Math.max(rawProgress, 0), 1);
 
-      // === Phase 3: Reverse into About logo (made slower) ===
+      // === Phase 3: Land in About logo ===
       const aboutSection = document.getElementById('about');
       const logoCircle = document.querySelector('.about-logo-circle');
       let reverseProgress = 0;
 
       if (aboutSection) {
         const aboutTop = aboutSection.offsetTop;
-        // Make the scroll zone wider for a slower, smoother scroll experience
-        const reverseRange = vh * 2.2; /* Expanded runway for slower landing and flip */
+        const reverseRange = vh * 2.2; /* Scroll runway to travel to About */
         const reverseRaw = (scrollY - (aboutTop - vh)) / reverseRange;
         reverseProgress = Math.min(Math.max(reverseRaw, 0), 1);
       }
 
-      // --- Starting position (read dynamically from CSS to prevent jump) ---
-      let startW = 15;
-      let startX = vw - (vw * 0.30) - startW / 2;
-      let startY = vh * 0.25 + startW / 2;
-
-      const heroMoonSky = document.querySelector('.hero-moon-sky');
-      if (heroMoonSky) {
-        const rect = heroMoonSky.getBoundingClientRect();
-        // Since we are relative to viewport, getBoundingClientRect is perfect
-        startW = rect.width > 0 ? rect.width : 15;
-        startX = rect.left + rect.width / 2;
-        startY = rect.top + rect.height / 2;
-      }
-
-      // --- Center of viewport ---
       const centerX = vw / 2;
       const centerY = vh / 2;
-      const lockedCenterY = centerY + 65; // Placed down slightly by 65px
+      const lockedCenterY = centerY + 65; // Slightly lower center offset
 
-      // --- Sizes ---
-      const midW = 550; // Beautiful centered size
-      const endW = 750; // Slightly less enlarged center size
+      // --- Starting position (sitting at the bottom part of the Hero, rising up) ---
+      const startX = centerX;
+      const startY = vh * 0.75;
 
-      // --- Logo target (relative to viewport since moon is fixed) ---
+      // --- Dimensions (Slightly larger terminal footprint) ---
+      const startW = 320;
+      const startH = 200;
+
+      const maxW = 720; // Expanded width
+      const maxH = 430; // Expanded height
+
+      const circleSize = 360; // Perfect circle morph size
+
+      // --- Target Logo Dimensions ---
       let logoX = centerX, logoY = centerY, logoW = 340;
       if (logoCircle) {
         const rect = logoCircle.getBoundingClientRect();
@@ -79,103 +71,138 @@ const ScrollMoon = () => {
         logoW = rect.width;
       }
 
-      let currentW, currentX, currentY;
+      let currentW, currentH, currentX, currentY;
+      let borderRadius = '16px';
+      let termContentOpacity = 1;
+      let frontLogoOpacity = 0;
 
       if (reverseProgress > 0 && heroProgress >= 1) {
-        // Phase 3: Reverse — shrink and move to logo position slower (stays larger longer)
+        // Phase 3: Moving to About Us Logo
         const travelRaw = reverseProgress / 0.52;
         const tTravel = easeOutCubic(Math.min(Math.max(travelRaw, 0), 1));
-        
-        currentW = lerp(endW, logoW, tTravel);
+
+        currentW = lerp(circleSize, logoW, tTravel);
+        currentH = lerp(circleSize, logoW, tTravel);
         currentX = lerp(centerX, logoX, tTravel);
         currentY = lerp(lockedCenterY, logoY, tTravel);
+
+        borderRadius = '50%';
+        termContentOpacity = 0;
+        frontLogoOpacity = 1;
       } else if (heroProgress <= 0.30) {
-        // Sub-phase 1: Zoom & Enlarge to full center size
+        // Phase 1: Rising from below and expanding
         const t = easeOutCubic(heroProgress / 0.30);
-        currentW = lerp(startW, endW, t); // Zoom directly to final max size!
+        currentW = lerp(startW, maxW, t);
+        currentH = lerp(startH, maxH, t);
         currentX = lerp(startX, centerX, t);
         currentY = lerp(startY, lockedCenterY, t);
-      } else {
-        // Sub-phase 2, 3, and 4: Locked in center at maximum size
-        currentW = endW;
+
+        borderRadius = '16px';
+        termContentOpacity = 1;
+        frontLogoOpacity = 0;
+      } else if (heroProgress > 0.30 && heroProgress <= 0.82) {
+        // Stage 2: Locked in center typing and erasing
+        currentW = maxW;
+        currentH = maxH;
         currentX = centerX;
         currentY = lockedCenterY;
+        
+        borderRadius = '16px';
+        termContentOpacity = 1;
+        frontLogoOpacity = 0;
+      } else if (heroProgress > 0.82 && heroProgress <= 0.96) {
+        // Stage 3: Morphing into a perfect circle & turning terminal into Logo
+        const tMorph = (heroProgress - 0.82) / 0.14;
+        const eMorph = easeOutCubic(tMorph);
+        
+        currentW = lerp(maxW, circleSize, eMorph);
+        currentH = lerp(maxH, circleSize, eMorph);
+        currentX = centerX;
+        currentY = lockedCenterY;
+        
+        borderRadius = `${lerp(16, 50, eMorph)}%`;
+        termContentOpacity = lerp(1, 0, eMorph);
+        frontLogoOpacity = lerp(0, 1, eMorph);
+      } else {
+        // Stage 4: Solid circle waiting to travel (Logo is fully active on front face)
+        currentW = circleSize;
+        currentH = circleSize;
+        currentX = centerX;
+        currentY = lockedCenterY;
+        
+        borderRadius = '50%';
+        termContentOpacity = 0;
+        frontLogoOpacity = 1;
       }
 
-      // Apply transform sizing and translate
-      moon.style.width = `${currentW}px`;
-      moon.style.height = `${currentW}px`;
-      moon.style.transform = `translate(${currentX - currentW / 2}px, ${currentY - currentW / 2}px)`;
+      // Apply transforms & dimension styles dynamically
+      term.style.width = `${currentW}px`;
+      term.style.height = `${currentH}px`;
+      term.style.transform = `translate(${currentX - currentW / 2}px, ${currentY - currentH / 2}px)`;
 
-      // Flip trigger: Execute the flip slightly earlier (26% progress) while the moon is still larger
-      const innerCard = moon.querySelector('.scroll-moon-inner');
-      if (innerCard) {
+      // Apply internal shape changes
+      const inner = term.querySelector('.scroll-terminal-inner');
+      const termHeader = term.querySelector('.terminal-header');
+      const termBody = term.querySelector('.terminal-body');
+      const frontLogo = term.querySelector('.terminal-front-logo');
+
+      if (inner) {
+        inner.style.borderRadius = borderRadius;
+        // 3D Flip trigger during the landing travel stage
         if (reverseProgress >= 0.26) {
-          innerCard.classList.add('is-flipped');
+          inner.classList.add('is-flipped');
         } else {
-          innerCard.classList.remove('is-flipped');
+          inner.classList.remove('is-flipped');
         }
       }
 
-      // Glow & float trigger: active whenever scrolling through hero (starts immediately upon scroll)
-      const isPhase2 = heroProgress > 0 && reverseProgress === 0;
-      if (isPhase2) {
-        moon.classList.add('is-phase2');
-      } else {
-        moon.classList.remove('is-phase2');
+      if (termHeader) termHeader.style.opacity = termContentOpacity;
+      if (termBody) termBody.style.opacity = termContentOpacity;
+      if (frontLogo) frontLogo.style.opacity = frontLogoOpacity;
+
+      // Smooth Fade-in after some scroll (starts fading in after 5% scroll, fully solid at 20%)
+      let currentOpacity = 1;
+      if (heroProgress <= 0.05) {
+        currentOpacity = 0;
+      } else if (heroProgress > 0.05 && heroProgress <= 0.20) {
+        currentOpacity = (heroProgress - 0.05) / 0.15; // Smooth fade-in
       }
 
-      // Hide moon once settled on logo
+      // Settle and switch visibility with About Us static logo
       const settled = reverseProgress >= 0.98;
+      term.style.opacity = settled ? '0' : `${currentOpacity}`;
 
-      // Toggle visibility between static hero moon and root scroll-moon
-      const heroMoon = document.querySelector('.hero-moon-sky');
-      if (heroProgress === 0) {
-        if (heroMoon) heroMoon.style.opacity = '1';
-        moon.style.opacity = '0';
-      } else {
-        if (heroMoon) heroMoon.style.opacity = '0';
-        moon.style.opacity = settled ? '0' : '1';
-      }
-
-      // Show/hide static About logo
       if (logoCircle) {
         logoCircle.style.opacity = settled ? '1' : '0';
       }
 
-      // Fade out hero text
+      // Fade out hero texts
       const heroContent = document.querySelector('.hero-cosmic-container');
       if (heroContent) {
         const textOpacity = Math.max(1 - heroProgress * 2.5, 0);
         heroContent.style.opacity = textOpacity;
       }
 
-      // Real-time scroll-linked typing & erasing animation with a long pause
-      const fullText = "We are Nilebyte.\nAnd we are here to make\na BIG change.";
+      // Real-time console typing animation (Line 3 has no > prefix)
+      const fullText = "> We are Nilebyte\n> And we are here to make\na BIG change";
+      
       if (reverseProgress > 0.05) {
-        // Transitioning to about us section — keep fully erased
         setTypedText("");
-        setShowTyping(false);
-      } else if (heroProgress > 0.30 && heroProgress <= 0.52) {
-        // Sub-phase 2: Slowly appear (typing)
-        const tType = (heroProgress - 0.30) / 0.22;
-        const charCount = Math.min(Math.floor(tType * (fullText.length + 1.5)), fullText.length);
+      } else if (heroProgress > 0.30 && heroProgress <= 0.50) {
+        // Typing Phase (0.20 runway)
+        const tType = (heroProgress - 0.30) / 0.20;
+        const charCount = Math.min(Math.floor(tType * (fullText.length + 2)), fullText.length);
         setTypedText(fullText.slice(0, charCount));
-        setShowTyping(charCount > 0);
-      } else if (heroProgress > 0.52 && heroProgress <= 0.74) {
-        // Sub-phase 2.5: Long Pause - text remains fully typed and static
+      } else if (heroProgress > 0.50 && heroProgress <= 0.76) {
+        // Prolonged Pause Phase (0.26 runway - static text visible much longer!)
         setTypedText(fullText);
-        setShowTyping(true);
-      } else if (heroProgress > 0.74 && heroProgress <= 0.96) {
-        // Sub-phase 3: Slowly erase
-        const tErase = (heroProgress - 0.74) / 0.22;
-        const charCount = Math.max(fullText.length - Math.floor(tErase * (fullText.length + 1.5)), 0);
+      } else if (heroProgress > 0.76 && heroProgress <= 0.82) {
+        // Fast Erasing Phase (0.06 runway) - erases at high speed
+        const tErase = (heroProgress - 0.76) / 0.06;
+        const charCount = Math.max(fullText.length - Math.floor(tErase * (fullText.length + 2)), 0);
         setTypedText(fullText.slice(0, charCount));
-        setShowTyping(charCount > 0);
       } else {
-        // Fully erased during Sub-phase 1 and Sub-phase 4
         setTypedText("");
-        setShowTyping(false);
       }
     }
 
@@ -199,44 +226,66 @@ const ScrollMoon = () => {
 
   return (
     <div
-      ref={moonRef}
-      className="scroll-moon"
-      style={{ opacity: ready ? 1 : 0 }}
+      ref={terminalRef}
+      className="scroll-terminal"
+      style={{ opacity: 0 }} // Start completely hidden
     >
-      <div className="scroll-moon-inner">
-        {/* Front side (Moon image) */}
-        <div className="scroll-moon-front">
-          <img
-            src="/moon3.png"
-            alt="Moon"
-            className="scroll-moon-img"
-          />
-          <div className="moon-light-gray-overlay"></div>
-          <div className={`moon-typing-container ${showTyping ? 'is-visible' : ''}`}>
-            <div className="moon-typing-content">
-              {typedLines.map((line, idx) => {
-                const showPrompt = idx < 2;
-                return (
-                  <div key={idx} className="moon-terminal-line">
-                    {showPrompt && <span className="moon-terminal-prompt">&gt; </span>}
-                    {!showPrompt && <span style={{ width: '1.2rem', display: 'inline-block' }} />}
-                    <span className="moon-typing-text">{line}</span>
-                    {idx === typedLines.length - 1 && typedText !== "" && (
-                      <span className="moon-terminal-cursor">_</span>
-                    )}
-                  </div>
-                );
-              })}
+      <div className="scroll-terminal-inner">
+        {/* Terminal window face (Front Face) */}
+        <div className="terminal-window">
+          {/* Fading Terminal Header Chrome */}
+          <div className="terminal-header">
+            <div className="terminal-dots">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
             </div>
+            <div className="terminal-title">/Nilebyte.exe</div>
+          </div>
+          {/* Fading Terminal Console Body */}
+          <div className="terminal-body">
+            {typedLines.map((line, idx) => {
+              const isCommand = line.startsWith('>');
+              const displayText = isCommand ? line.substring(1).trim() : line;
+              // Dynamically capture the word "Nilebyte" to highlight it in brand blue
+              const parts = displayText.split(/(Nilebyte)/g);
+
+              return (
+                <div key={idx} className="terminal-line">
+                  {isCommand && <span className="terminal-prompt">&gt; </span>}
+                  {!isCommand && line !== "" && <span className="terminal-prompt-spacer" />}
+                  <span className="terminal-text">
+                    {parts.map((part, pIdx) => {
+                      if (part === "Nilebyte") {
+                        return <span key={pIdx} className="terminal-highlight-blue">{part}</span>;
+                      }
+                      return part;
+                    })}
+                  </span>
+                  {idx === typedLines.length - 1 && typedText !== "" && (
+                    <span className="terminal-cursor">_</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Front Logo Viewport (Faded in during Stage 3 inside Hero) */}
+          <div className="terminal-front-logo" style={{ opacity: 0 }}>
+            <img
+              src="/logo.png"
+              alt="Nilebyte Logo"
+              className="terminal-logo-img"
+            />
           </div>
         </div>
 
-        {/* Back side (Branded Logo with light glow / matching style) */}
-        <div className="scroll-moon-back">
+        {/* Logo overlay face (Back Face of the Flip Card) */}
+        <div className="terminal-logo-overlay">
           <img
             src="/logo.png"
             alt="Nilebyte Logo"
-            className="scroll-moon-logo-img"
+            className="terminal-logo-img"
           />
         </div>
       </div>

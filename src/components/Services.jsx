@@ -48,7 +48,7 @@ const Services = () => {
     },
     {
       id: '04',
-      title: 'Internal Management Solutions',
+      title: 'Mini ERP & Internal Management Systems',
       fileName: 'management-dashboard.png',
       description: 'Bespoke administrative tools, secure databases, and operational dashboards designed to centralize company data and streamline collaboration between all departments.',
       features: [
@@ -62,7 +62,7 @@ const Services = () => {
     },
     {
       id: '05',
-      title: 'Mini ERP System',
+      title: 'Cybersecurity Solutions',
       fileName: 'mini-erp-tracker.png',
       description: 'A modular, high-speed Enterprise Resource Planning system to track assets, handle invoicing, and manage inventory without any of the bloated complex overhead.',
       features: [
