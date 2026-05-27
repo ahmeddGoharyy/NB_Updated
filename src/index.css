@@ -90,34 +90,172 @@ h2 {
   transform: translateX(-100%);
 }
 
-/* Logo container — holds the 4 quarter layers */
+/* Logo container — Glass cup structure */
 .loading-logo-container {
   position: relative;
   width: 320px;
   height: 320px;
   border-radius: 50%;
   overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 15, 0.85);
+  box-shadow: 
+    0 0 50px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(18, 75, 179, 0.15),
+    inset 0 0 25px rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Each quarter is an absolutely positioned copy of the full image,
-   clipped to its 25% horizontal band via inline clip-path */
-.loading-quarter {
+/* Background image wrapper */
+.loading-logo-bg-wrapper {
   position: absolute;
   inset: 0;
-  filter: brightness(0.08);
-  transition: filter 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-/* Lit state — reveal original colors */
-.loading-quarter--lit {
-  filter: brightness(1);
-}
-
-.loading-logo-img {
+/* The darkened background logo image */
+.loading-logo-img--dark {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0.08;
+  filter: grayscale(0.5) brightness(0.25) contrast(1.1);
+}
+
+/* Water fill rising container */
+.loading-logo-water-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0%; /* Dynamically animated via React state */
+  overflow: hidden;
+  z-index: 2;
+  transition: height 0.05s linear; /* extremely fluid responsive tracking */
+}
+
+/* Water fill inner image - matches container size exactly to align perfectly */
+.loading-logo-water-inner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 320px;
+  height: 320px;
+}
+
+/* Original colors fully-lit logo image */
+.loading-logo-img--lit {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(1) contrast(1.05) saturate(1.1);
+}
+
+/* Water waves overlay container - floats at the water level */
+.loading-water-waves {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 40px; /* match SVG height */
+  pointer-events: none;
+  z-index: 4;
+  overflow: visible;
+  transition: bottom 0.05s linear; /* align wave with fill level smoothly */
+}
+
+/* Single wave element */
+.loading-water-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+}
+
+.loading-water-wave svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.loading-water-wave--front {
+  width: 640px;
+  animation: waveMoveRight 2.8s linear infinite;
+}
+
+.loading-water-wave--back {
+  width: 640px;
+  animation: waveMoveLeft 4.5s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes waveMoveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-320px); /* exact shift by half of 640px for perfect looping */
+  }
+}
+
+@keyframes waveMoveLeft {
+  0% {
+    transform: translateX(-320px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Bubbles inside the cup */
+.loading-water-bubbles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.loading-bubble {
+  position: absolute;
+  bottom: 0;
+  left: var(--left);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 
+    0 0 6px rgba(18, 75, 179, 0.8),
+    inset 0 0 3px rgba(255, 255, 255, 0.8);
+  animation: floatBubble 2.2s infinite ease-in;
+  animation-delay: calc(var(--i) * -0.5s);
+  opacity: 0;
+}
+
+@keyframes floatBubble {
+  0% {
+    transform: translateY(0) scale(0.4);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-280px) scale(1.3);
+    opacity: 0;
+  }
 }
 
 /* Loading bar */
@@ -137,7 +275,7 @@ h2 {
   height: 100%;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.75);
-  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: width 0.05s linear; /* matches liquid rise speed */
 }
 
 /* Ambient floating particles */
@@ -2644,8 +2782,8 @@ h2 {
 /* Top grid layout */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr; /* Changed to premium 2-column layout */
-  gap: 5rem;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal parts in web view only */
+  gap: 4rem;
   align-items: start;
   margin-bottom: 2.5rem; /* Reduced margin before the bottom logo */
 }
@@ -2657,17 +2795,10 @@ h2 {
   align-items: center;
 }
 
-.footer-logo-socials-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 6.5rem; /* Increased from 3.5rem to 6.5rem for spacious, premium desktop breathing room */
-}
-
-.footer-brand-socials-container {
+.footer-col-socials {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 4.5rem; /* Explicit margin spacer to separate socials from the brand logo circle */
 }
 
 .footer-brand-socials {
@@ -2677,7 +2808,7 @@ h2 {
 }
 
 .footer-brand-container {
-  max-width: 220px;
+  max-width: 260px;
   transition: transform 0.3s ease;
 }
 
@@ -2686,8 +2817,8 @@ h2 {
 }
 
 .footer-brand-logo {
-  width: 140px;
-  height: 140px;
+  width: 180px; /* Significantly bigger logo */
+  height: 180px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
