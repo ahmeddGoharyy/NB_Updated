@@ -2660,13 +2660,14 @@ h2 {
 .footer-logo-socials-wrapper {
   display: flex;
   align-items: center;
-  gap: 3.5rem; /* Luxurious spacing between logo and social list */
+  gap: 6.5rem; /* Increased from 3.5rem to 6.5rem for spacious, premium desktop breathing room */
 }
 
 .footer-brand-socials-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-left: 4.5rem; /* Explicit margin spacer to separate socials from the brand logo circle */
 }
 
 .footer-brand-socials {
@@ -2868,7 +2869,7 @@ h2 {
 
 .footer-giant-logo {
   width: 100%;
-  max-width: 440px; /* Increased from 350px to 440px to make it slightly bigger */
+  max-width: 380px; /* Reduced to a balanced 380px visual sweet spot */
   height: auto;
   opacity: 1; /* Fully visible logo */
   border-radius: 16px;
@@ -2978,6 +2979,7 @@ h2 {
     align-items: flex-start !important;
     width: 100% !important;
     padding-left: 1rem !important; /* Soft shift to center the text column in its half */
+    margin-left: 0 !important; /* Reset desktop explicit margin shift */
   }
 
   .footer-giant-logo-container {
@@ -2986,7 +2988,7 @@ h2 {
   }
 
   .footer-giant-logo {
-    max-width: 220px !important; /* Increased from 170px to 220px to make it slightly bigger on mobile */
+    max-width: 190px !important; /* Reduced to a balanced 190px on mobile screens */
   }
 
   .footer-binary-text {
