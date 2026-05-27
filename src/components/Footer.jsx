@@ -1,4 +1,5 @@
 import React from 'react';
+import { Instagram, Linkedin, Facebook } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -14,22 +15,31 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2: Quick Links / Socials */}
+          {/* Column 2: Social Media Platform Rows (Icon + Text) */}
           <div className="footer-col-links">
-            <h4 className="footer-heading">QUICK LINKS</h4>
-            <ul className="footer-links-list">
+            <h4 className="footer-heading">SOCIAL MEDIA</h4>
+            <ul className="footer-social-list">
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="footer-social-link" aria-label="Instagram">
+                  <div className="footer-social-icon-circle social-instagram">
+                    <Instagram size={16} />
+                  </div>
                   <span>Instagram</span>
                 </a>
               </li>
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="footer-social-link" aria-label="LinkedIn">
+                  <div className="footer-social-icon-circle social-linkedin">
+                    <Linkedin size={16} />
+                  </div>
                   <span>LinkedIn</span>
                 </a>
               </li>
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="footer-social-link" aria-label="Facebook">
+                  <div className="footer-social-icon-circle social-facebook">
+                    <Facebook size={16} />
+                  </div>
                   <span>Facebook</span>
                 </a>
               </li>

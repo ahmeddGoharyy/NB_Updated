@@ -248,7 +248,7 @@ const Services = () => {
   };
 
   return (
-    <section id="services" className="services-section">
+    <section id="services" className="services-section" data-theme="light">
       {/* Central Centered Split Header */}
       <div className="services-central-header">
         <h2 className="services-main-title">

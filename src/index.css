@@ -221,69 +221,99 @@ h2 {
   margin: 0 auto;
 }
 
-/* NAVBAR (Pill / Frosted Glass) */
+/* NAVBAR (Elements stay perfectly static, Frosted Glass capsule emerges on scroll) */
 .navbar {
   position: fixed;
-  top: 1rem;
+  top: 1.2rem;
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 4rem);
-  max-width: 1400px;
-  padding: 0.8rem 2.5rem;
+  max-width: 1300px;
+  padding: 0.8rem 2.5rem; /* Exactly the same padding to prevent elements shifting */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px; /* Rounded in both states for perfect transitioning */
+  background: transparent;
+  border: 1px solid transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  z-index: 100000;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Scrolled State: Purely Glassmorphic transparent Pill */
+.navbar.navbar--scrolled {
+  background: rgba(255, 255, 255, 0.03) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 100000;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    background 0.4s ease,
-    box-shadow 0.4s ease,
-    border-color 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
 }
 
-
-/* Slightly more visible backdrop once scrolled */
-.navbar--scrolled {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Dark-tinted variant for light-background sections */
+/* Light Theme Overrides (Frosted glass pill matches theme scroll) */
 .navbar--light {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
+
+.navbar--light.navbar--scrolled {
+  background: rgba(255, 255, 255, 0.03) !important; /* Purely transparent glass capsule */
+  border: 1px solid rgba(18, 75, 179, 0.12);
+  box-shadow: 0 10px 30px rgba(11, 19, 43, 0.03);
+}
+
+
 
 .navbar--light .nav-brand-text {
-  color: #1D4ED8;
+  color: #0b132b; /* Matches premium black branding exactly */
 }
 
 .navbar--light .nav-link {
-  color: #333333;
+  color: #0b132b; /* Deep high-contrast slate navy links */
 }
 
-/* Inherits the same blue underline from the base .nav-link */
-
 .navbar--light .nav-link:hover {
-  color: #555555; /* Darker gray on hover */
+  color: #124bb3; /* Hover highlights in brand blue */
 }
 
 .navbar--light .social-circle {
-  background: rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.12);
-  color: #1a1a2e;
+  background: rgba(11, 19, 43, 0.05);
+  border-color: rgba(11, 19, 43, 0.08);
+  color: #0b132b;
 }
 
-.navbar--light .nav-logo {
-  border-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+.navbar--light .social-circle:hover {
+  transform: translateY(-2px);
 }
+
+.navbar--light .social-instagram:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+  border-color: #dc2743 !important;
+  color: #FFFFFF !important;
+}
+
+.navbar--light .social-linkedin:hover {
+  background: #0A66C2 !important;
+  border-color: #0A66C2 !important;
+  color: #FFFFFF !important;
+}
+
+.navbar--light .social-facebook:hover {
+  background: #1877F2 !important;
+  border-color: #1877F2 !important;
+  color: #FFFFFF !important;
+}
+
+
+.navbar--light .nav-logo {
+  border-color: rgba(18, 75, 179, 0.15);
+  box-shadow: 0 0 12px rgba(18, 75, 179, 0.08);
+}
+
+
 
 .nav-left {
   flex: 1;
@@ -317,7 +347,7 @@ h2 {
 }
 
 .nav-brand-text {
-  color: #2563EB;
+  color: #0b132b; /* Matches premium black branding exactly */
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 700;
@@ -478,27 +508,24 @@ h2 {
   height: 100vh;
   width: 100vw;
   overflow: visible;
-  background-color: var(--bg-base);
+  background: 
+    linear-gradient(90deg, rgba(18, 75, 179, 0.12) 0%, transparent 22%, transparent 78%, rgba(18, 75, 179, 0.12) 100%),
+    #D8DDE3; /* Perfectly matches About Us section background */
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Background image */
-.hero-bg {
+/* Canvas Background */
+.hero-canvas {
   position: absolute;
   inset: 0;
-  background-image: url('/image3.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 2s ease-out;
-  z-index: 1;
-}
-
-.hero-cosmic.is-loaded .hero-bg {
-  opacity: 0.82; /* Slightly less visible / beautifully blended */
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1; /* Elevate to guarantee it sits above section background and below text container */
 }
 
 /* Layout */
@@ -516,106 +543,166 @@ h2 {
   overflow: hidden;
 }
 
-.hero-layout {
-  display: flex;
+/* Centered Brand Badge */
+.hero-brand-badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  gap: 1.5rem;
-  transform: translateY(-15vh);
+  gap: 1.0rem;
+  margin-bottom: 2.4rem;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
 }
 
-/* Typography */
-.hero-title {
+.hero-brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.hero-brand-name {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(2rem, 4.2vw, 6rem);
-  line-height: 1.05;
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: #0b132b;
+  letter-spacing: -0.01em;
+}
+
+
+/* Centered Typography */
+.hero-main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.4rem, 5.5vw, 6.2rem); /* Massive, ultra high-impact clamping scale */
+  line-height: 1.08;
   font-weight: 800;
-  color: #1D4ED8;
-  /* Premium Royal Blue (slightly darker, highly readable) */
+  text-align: center;
   letter-spacing: -0.03em;
-  text-shadow: 0 2px 10px rgba(11, 19, 43, 0.08);
-  opacity: 0;
-  white-space: nowrap;
+  margin-bottom: 1.8rem;
+  max-width: 1200px;
+  width: 100%;
+  /* High-end black-to-blue linear text gradient fill */
+  background: linear-gradient(135deg, #0b132b 58%, #124bb3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
 }
 
-.hero-text-left {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  text-align: right;
-  min-width: 0;
-  overflow: hidden;
-}
 
-.hero-text-left .hero-title {
-  transform: translateX(-50px);
-  position: relative;
-  z-index: 1;
-}
 
-.hero-text-right {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-  text-align: left;
-  min-width: 0;
-  overflow: hidden;
-}
 
-.hero-text-right .hero-title {
-  transform: translateX(50px);
-  position: relative;
-  z-index: 1;
-}
 
-/* Sub header row */
-.hero-sub-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-  margin-top: -1rem;
-  transform: translateY(-9vh);
-  position: relative;
-  z-index: 6;
+
+.hero-main-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem); /* Slightly larger cosmic navy typography */
+  font-weight: 500;
+  color: rgba(11, 19, 43, 0.75); /* High-contrast semi-transparent deep navy */
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  margin-bottom: 2.8rem;
+  max-width: 880px;
   width: 100%;
 }
 
-.hero-sub {
+
+/* Centered Dual CTA Buttons */
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.hero-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #0b132b; /* Sleek, dark near-black */
+  color: #ffffff !important;
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(1rem, 1.4vw, 1.5rem);
-  font-weight: 500;
-  color: #0B132B;
-  /* High-contrast Deep Cosmic Navy */
-  line-height: 1.5;
-  letter-spacing: 0.05em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.85rem 1.8rem;
+  border-radius: 40px;
+  border: 1px solid #0b132b;
+  box-shadow: 0 4px 15px rgba(11, 19, 43, 0.15);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hero-cta-primary:hover {
+  transform: translateY(-2px);
+  background: #124bb3; /* Hover slides to primary brand blue */
+  border-color: #124bb3;
+  box-shadow: 0 8px 25px rgba(18, 75, 179, 0.25);
+}
+
+.hero-cta-primary .cta-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s ease;
+}
+
+.hero-cta-primary:hover .cta-icon {
+  transform: translateX(3px);
+}
+
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #0b132b !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.85rem 1.8rem;
+  border-radius: 40px;
+  border: 1px solid rgba(110, 125, 145, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hero-cta-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(18, 75, 179, 0.25);
+  box-shadow: 0 8px 25px rgba(11, 19, 43, 0.06);
+}
+
+/* Animations */
+.animate-fade-in {
   opacity: 0;
-  transform: translateY(15px);
-  white-space: nowrap;
+  transform: translateY(20px);
+  animation: heroFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-.hero-sub-dot {
-  font-size: 1.5rem;
-  color: #1D4ED8;
-  /* Keeping the dot blue for a premium accent */
+.animate-fade-in-delayed {
   opacity: 0;
-  transform: translateY(15px);
+  transform: translateY(25px);
+  animation: heroFadeIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 0.2s;
 }
 
-.hero-cosmic.is-loaded .hero-sub,
-.hero-cosmic.is-loaded .hero-sub-dot {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.8s ease-out 1.4s;
+@keyframes heroFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.hero-cosmic.is-loaded .hero-text-left .hero-title,
-.hero-cosmic.is-loaded .hero-text-right .hero-title {
-  opacity: 1;
-  transform: translateX(0);
-  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s;
-}
 
 /* Root level Scroll Terminal that morphs into a Circle */
 .scroll-terminal {
@@ -2270,6 +2357,68 @@ h2 {
     gap: 2rem;
   }
 }
+
+/* Footer Social Media Platform List (Icon + Text side-by-side, Always Platform Colored) */
+.footer-social-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.0rem;
+}
+
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  gap: 1.0rem;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.footer-social-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateX(4px); /* Smooth horizontal indent slide on hover */
+}
+
+.footer-social-icon-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF !important;
+  border: none !important;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.footer-social-link:hover .footer-social-icon-circle {
+  transform: rotate(12deg) scale(1.1); /* High-end visual lift and rotation */
+  filter: brightness(1.15);
+}
+
+/* Always Platform Colored Brand Glows */
+.footer-social-icon-circle.social-instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+  box-shadow: 0 3px 8px rgba(220, 39, 67, 0.35);
+}
+
+.footer-social-icon-circle.social-linkedin {
+  background: #0A66C2 !important;
+  box-shadow: 0 3px 8px rgba(10, 102, 194, 0.4);
+}
+
+.footer-social-icon-circle.social-facebook {
+  background: #1877F2 !important;
+  box-shadow: 0 3px 8px rgba(24, 119, 242, 0.4);
+}
+
+
 
 /* ── Premium Swedish Peptides Footer Styles ── */
 .footer-swedish {
