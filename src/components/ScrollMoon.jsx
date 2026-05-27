@@ -183,22 +183,22 @@ const ScrollMoon = () => {
         heroContent.style.opacity = textOpacity;
       }
 
-      // Real-time console typing animation (Every line prefixed with > prompt)
-      const fullText = "> We are Nilebyte\n> And we are here to make -\n>#2 a BIG change";
+      // Real-time console typing animation (Line 3 has no > prefix)
+      const fullText = "> We are Nilebyte.\n> And we are here to make\na BIG change.";
 
       if (reverseProgress > 0.05) {
         setTypedText("");
-      } else if (heroProgress > 0.30 && heroProgress <= 0.55) {
-        // Typing Phase (0.25 runway)
-        const tType = (heroProgress - 0.30) / 0.25;
+      } else if (heroProgress > 0.30 && heroProgress <= 0.50) {
+        // Typing Phase (0.20 runway)
+        const tType = (heroProgress - 0.30) / 0.20;
         const charCount = Math.min(Math.floor(tType * (fullText.length + 2)), fullText.length);
         setTypedText(fullText.slice(0, charCount));
-      } else if (heroProgress > 0.55 && heroProgress <= 0.68) {
-        // Pause Phase (0.13 runway)
+      } else if (heroProgress > 0.50 && heroProgress <= 0.76) {
+        // Prolonged Pause Phase (0.26 runway - static text visible much longer!)
         setTypedText(fullText);
-      } else if (heroProgress > 0.68 && heroProgress <= 0.75) {
-        // Fast Erasing Phase (0.07 runway) - erases twice as fast!
-        const tErase = (heroProgress - 0.68) / 0.07;
+      } else if (heroProgress > 0.76 && heroProgress <= 0.82) {
+        // Fast Erasing Phase (0.06 runway) - erases at high speed
+        const tErase = (heroProgress - 0.76) / 0.06;
         const charCount = Math.max(fullText.length - Math.floor(tErase * (fullText.length + 2)), 0);
         setTypedText(fullText.slice(0, charCount));
       } else {

@@ -657,6 +657,7 @@ h2 {
   overflow: hidden; /* Rounding container here instead */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(1px); /* Physical 3D separation forward */
   z-index: 2;
 }
 
@@ -766,7 +767,7 @@ h2 {
   overflow: hidden; /* Rounding container here instead */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transform: rotateY(180deg); /* Flip it so it aligns facing back */
+  transform: rotateY(180deg) translateZ(1px); /* Flip and separate backward in local space */
   z-index: 1;
 }
 
@@ -800,6 +801,8 @@ h2 {
   transform: scale(1.2);
   object-position: left center;
 }
+
+/* Remove any counter-rotational overrides */
 
 /* Moon placeholder/starting state inside hero section */
 .hero-moon-sky {
