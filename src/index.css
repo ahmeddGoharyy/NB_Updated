@@ -1807,19 +1807,26 @@ h2 {
   .services-section {
     flex-direction: column;
     background: none; /* Turn off diagonal linear gradient when stacked */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
 
   .services-left-pane {
     width: 100%;
     padding: 10rem 2rem 5rem 2rem; /* Give space under absolute title */
-    min-height: auto;
+    height: auto !important;
+    min-height: auto !important;
     background-color: #1D4ED8; /* Solid royal blue for stacked top block */
   }
 
   .services-right-pane {
     width: 100%;
     padding: 5rem 2rem;
-    min-height: auto;
+    height: auto !important;
+    height: auto !important;
+    min-height: auto !important;
     background-color: #D8DDE3; /* Solid slate gray for stacked bottom block */
   }
 
@@ -1837,6 +1844,85 @@ h2 {
   .title-our, .title-services {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
+  }
+
+  /* COMPACT MOBILE SCALING FOR SERVICES (STACKED VIEW) */
+  .services-left-pane {
+    padding: 8rem 1.2rem 2.5rem 1.2rem !important; /* Super snug vertical spaces */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .services-toggles-container.blue-theme {
+    gap: 1.4rem !important; /* Well-spaced, premium layout gaps */
+    max-width: 440px !important; /* Limit horizontal stretch to look less flat */
+    margin: 0 auto !important; /* Center columns within the blue pane */
+    width: 100% !important;
+  }
+
+  .service-toggle-button.blue-pane {
+    padding: 1.15rem 1.5rem !important; /* Thicker, chunky premium block buttons */
+    font-size: clamp(1rem, 4.2vw, 1.25rem) !important; /* Fluid, legible mobile font bounds */
+    width: 100% !important;
+  }
+
+  .service-toggle-button.blue-pane.active {
+    transform: translateX(8px) scale(1.01) !important; /* Less aggressive translation inside narrow containers */
+    border-left-width: 6px !important; /* Thinner royal blue highlight */
+  }
+
+  .toggle-button-number {
+    font-size: 1.05rem !important;
+  }
+
+  .services-right-pane {
+    padding: 2rem 1.2rem 4rem 1.2rem !important; /* Snug buffer above/below preview card */
+  }
+
+  .services-window-card.preview-card {
+    border-radius: 16px !important;
+  }
+
+  .service-visual-panel {
+    height: 180px !important; /* Extremely neat mockup height on mobile! */
+  }
+
+  .service-info-panel {
+    padding: 1.1rem 1.2rem 1.2rem 1.2rem !important; /* Snug content block padding */
+  }
+
+  .active-service-heading {
+    font-size: 1.45rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  .active-service-description {
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .active-service-tags {
+    margin-bottom: 0.8rem !important;
+    gap: 0.35rem !important;
+  }
+
+  .active-tag {
+    font-size: 0.7rem !important;
+    padding: 0.12rem 0.4rem !important;
+  }
+
+  .active-service-bullets-divider {
+    margin-bottom: 0.8rem !important;
+  }
+
+  .active-service-bullets {
+    gap: 0.4rem !important;
+  }
+
+  .active-bullet-text {
+    font-size: 0.85rem !important;
   }
 }
 
@@ -2108,24 +2194,126 @@ h2 {
   color: #6B7280;
 }
 
-/* ── Responsive ── */
+/* ── Responsive adjustments for portfolio section ── */
 @media (max-width: 768px) {
-  .portfolio-arc-card {
-    height: auto;
-  }
-
-  .portfolio-action-btn {
-    width: 42px;
-    height: 42px;
-  }
-
-  .portfolio-services-row {
-    flex-wrap: wrap;
-    gap: 1.5rem;
+  .portfolio-section {
+    padding: 4rem 1.2rem 3.5rem 1.2rem !important;
   }
 
   .portfolio-heading {
-    font-size: 2.2rem;
+    font-size: clamp(2rem, 8vw, 2.6rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .portfolio-heading br,
+  .portfolio-subtitle br {
+    display: none !important; /* Prevents awkward line break wraps on phone screens! */
+  }
+
+  .portfolio-subtitle {
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
+    padding: 0 0.5rem !important;
+    margin-bottom: 1.6rem !important;
+  }
+
+  .portfolio-actions-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* Unified cohesive player controller */
+    gap: 0.8rem !important; /* Compact spacing between controls */
+    width: 100% !important;
+    max-width: 380px !important; /* Capped horizontal width for narrow screens */
+    margin: 1.2rem auto 1.5rem auto !important; /* Cushioned and centered */
+    padding: 0 1rem !important;
+  }
+
+  .portfolio-action-btn {
+    width: 38px !important;
+    height: 38px !important;
+    transform: none !important;
+    box-shadow: 0 4px 10px rgba(29, 78, 216, 0.22) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+  }
+
+  .portfolio-action-btn:hover,
+  .portfolio-action-btn:active {
+    transform: none !important;
+  }
+
+  .portfolio-action-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .portfolio-info-pill {
+    height: 38px !important; /* Match action buttons height exactly for perfect horizontal alignment */
+    padding: 0 1.2rem !important; /* Snug horizontal padding */
+    font-size: 0.78rem !important;
+    transform: none !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    border-radius: 40px !important; /* Sleek pill shape */
+  }
+
+  .portfolio-arc-wrapper {
+    margin-bottom: 1.5rem !important;
+    padding: 1rem 0 !important;
+  }
+
+  .portfolio-arc-track {
+    height: 280px !important; /* Lock track height so card fanning is highly stable */
+  }
+
+  .portfolio-project-details-container {
+    margin: 0.8rem auto 2.5rem auto !important;
+    padding: 0 0.5rem !important;
+  }
+
+  .portfolio-project-category {
+    font-size: 0.78rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .portfolio-project-title {
+    font-size: clamp(1.4rem, 6vw, 1.85rem) !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .portfolio-project-description {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .portfolio-services-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Beautiful 2x2 grid on mobile! */
+    gap: 1.2rem 1.6rem !important;
+    padding: 0 1rem !important;
+    width: 100% !important;
+    justify-items: center !important;
+  }
+
+  .portfolio-service-item {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .portfolio-service-num {
+    font-size: 0.95rem !important;
+  }
+
+  .portfolio-service-label {
+    font-size: 0.82rem !important;
   }
 }
 
@@ -2456,8 +2644,8 @@ h2 {
 /* Top grid layout */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.3fr;
-  gap: 4rem;
+  grid-template-columns: 1.3fr 1fr; /* Changed to premium 2-column layout */
+  gap: 5rem;
   align-items: start;
   margin-bottom: 2.5rem; /* Reduced margin before the bottom logo */
 }
@@ -2466,6 +2654,25 @@ h2 {
 .footer-col-logo {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+}
+
+.footer-logo-socials-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem; /* Luxurious spacing between logo and social list */
+}
+
+.footer-brand-socials-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-brand-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
 .footer-brand-container {
@@ -2661,7 +2868,7 @@ h2 {
 
 .footer-giant-logo {
   width: 100%;
-  max-width: 350px;
+  max-width: 440px; /* Increased from 350px to 440px to make it slightly bigger */
   height: auto;
   opacity: 1; /* Fully visible logo */
   border-radius: 16px;
@@ -2740,6 +2947,51 @@ h2 {
 
   .footer-product-pen {
     max-width: 240px;
+  }
+
+  /* RESPONSIVE FOOTER GROUPING & WATERMARK BINARY FIT */
+  .footer-logo-socials-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Perfect 50% / 50% split grid */
+    gap: 1rem !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+
+  .footer-brand-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .footer-brand-logo {
+    width: 100px !important; /* Elegant scaled diameter */
+    height: 100px !important;
+    margin: 0 auto !important; /* Absolute horizontal centering inside its half */
+  }
+
+  .footer-brand-socials-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    padding-left: 1rem !important; /* Soft shift to center the text column in its half */
+  }
+
+  .footer-giant-logo-container {
+    gap: 1.2rem !important; /* Pull wide logo and binary tags closer to prevent wrap! */
+    padding-top: 1.2rem !important;
+  }
+
+  .footer-giant-logo {
+    max-width: 220px !important; /* Increased from 170px to 220px to make it slightly bigger on mobile */
+  }
+
+  .footer-binary-text {
+    font-size: 0.82rem !important; /* Small space-mono binaries */
+    white-space: nowrap !important; /* Never wrap! */
   }
 }
 
@@ -3182,5 +3434,336 @@ h2 {
   }
   .portfolio-modal-content-pane {
     padding: 2rem 1.2rem;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────
+   ── ELITE MOBILE VIEW RESPONSIVENESS OVERRIDES ──
+   ────────────────────────────────────────────────────────────────────── */
+
+/* Default toggle button and mobile drawer hidden on desktop */
+.nav-toggle,
+.mobile-drawer {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  /* NAVBAR MOBILE STRUCTURAL ADAPTATIONS */
+  .navbar {
+    padding: 0.6rem 1.4rem !important;
+    width: calc(100% - 2rem) !important;
+    top: 0.8rem !important;
+  }
+
+  .nav-links,
+  .nav-socials {
+    display: none !important; /* Hide desktop elements */
+  }
+
+  .nav-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.4rem;
+    transition: all 0.3s ease;
+    z-index: 100001;
+  }
+
+  /* When scrolled, hamburger toggle turns black inside the light navbar overlays */
+  .navbar--light .nav-toggle {
+    color: #0b132b;
+  }
+
+  .nav-toggle:hover {
+    transform: scale(1.08);
+  }
+
+  /* MOBILE SLIDE-DOWN DRAWER (GORGEOUS GLASSMORPHIC pill card floating below) */
+  .mobile-drawer {
+    display: flex !important;
+    position: absolute;
+    top: calc(100% + 0.8rem);
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    z-index: -1;
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  }
+
+
+  .mobile-drawer--open {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+  }
+
+  /* Slide-down adapts beautifully to scrolled light themes! */
+  .navbar--light .mobile-drawer {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 1px solid rgba(18, 75, 179, 0.12);
+    box-shadow: 0 15px 35px rgba(11, 19, 43, 0.08);
+  }
+
+  /* Mobile links list */
+  .mobile-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    width: 100%;
+  }
+
+  .mobile-nav-link {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: -0.01em;
+    padding: 0.3rem 1.5rem;
+  }
+
+  .navbar--light .mobile-nav-link {
+    color: #0b132b;
+  }
+
+  .mobile-nav-link:hover {
+    color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
+  }
+
+  .navbar--light .mobile-nav-link:hover {
+    color: #124bb3;
+  }
+
+  .mobile-socials-row {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.2rem;
+    width: 80%;
+  }
+
+  .navbar--light .mobile-socials-row {
+    border-top-color: rgba(11, 19, 43, 0.08);
+  }
+
+  /* HERO MOBILE VIEWS */
+  .hero-main-title {
+    font-size: clamp(1.9rem, 7.5vw, 2.7rem) !important;
+    line-height: 1.14 !important;
+    margin-bottom: 1.2rem !important;
+    padding: 0 0.5rem !important;
+    word-break: keep-all;
+  }
+
+  .hero-main-subtitle {
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 2.2rem !important;
+    padding: 0 0.8rem !important;
+  }
+
+  .hero-cta-group {
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 0.8rem !important;
+    width: 100% !important;
+    max-width: 380px !important;
+  }
+
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    width: auto !important;
+    flex: 1 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 0.8rem 1rem !important;
+    font-size: clamp(0.85rem, 3.2vw, 0.95rem) !important;
+    white-space: nowrap !important;
+  }
+
+  .hero-brand-badge {
+    margin-bottom: 1.8rem !important;
+    gap: 0.8rem !important;
+  }
+
+  .hero-brand-logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .hero-brand-name {
+    font-size: 1.35rem !important;
+  }
+
+  /* ABOUT US MOBILE VIEWS */
+  .about-section {
+    padding: 4.5rem 1.2rem !important;
+  }
+
+  .about-wrapper {
+    flex-direction: column-reverse !important;
+    gap: 2.2rem !important;
+  }
+
+  .about-badge {
+    margin: 0 0 1.2rem !important;
+    display: inline-block !important;
+    width: auto !important;
+  }
+
+  .about-heading {
+    font-size: 2.2rem !important;
+    text-align: left !important;
+    width: 100% !important;
+    margin-bottom: 1.2rem !important;
+  }
+
+  .about-description {
+    font-size: 1.08rem !important;
+    text-align: left !important;
+    line-height: 1.55 !important;
+    margin-bottom: 2rem !important;
+    padding: 0 !important;
+  }
+
+  .about-contact-list {
+    align-items: flex-start !important;
+    margin-bottom: 2.2rem !important;
+    gap: 0.9rem !important;
+  }
+
+  .about-stats {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.6rem !important;
+    text-align: left !important;
+  }
+
+  .stat-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .stat-item h3 {
+    font-size: 2.1rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .stat-item p {
+    font-size: 0.95rem !important;
+  }
+
+  .about-right {
+    flex: 1 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .about-image-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    justify-content: center !important;
+    align-items: center !important;
+    aspect-ratio: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem !important;
+    overflow: visible !important;
+  }
+
+  .about-logo-circle {
+    width: clamp(180px, 48vw, 220px) !important;
+    height: clamp(180px, 48vw, 220px) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .hero-cosmic::after {
+    display: block !important; /* Active only on mobile viewports! */
+  }
+
+  /* RESPONSIVE SCROLLING TERMINAL ADAPTATIONS */
+  .terminal-line {
+    font-size: clamp(0.82rem, 3.6vw, 1.05rem) !important;
+    line-height: 1.4 !important;
+  }
+
+  .terminal-body {
+    padding: 16px 14px !important;
+    gap: 10px !important;
+  }
+
+  .terminal-header {
+    height: 30px !important;
+    padding: 0 12px !important;
+  }
+
+  .terminal-title {
+    font-size: 0.65rem !important;
+  }
+
+  .terminal-logo-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transform: scale(1.0) !important;
+    object-position: center !important;
+  }
+}
+
+/* Glowing ambient orb behind the text container on mobile screens */
+.hero-cosmic::after {
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(240px, 70vw, 320px);
+  height: clamp(240px, 70vw, 320px);
+  background: radial-gradient(circle, rgba(18, 75, 179, 0.16) 0%, rgba(79, 70, 229, 0.06) 50%, transparent 70%);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  animation: pulseOrb 4.5s ease-in-out infinite alternate;
+  display: none;
+}
+
+@keyframes pulseOrb {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
   }
 }

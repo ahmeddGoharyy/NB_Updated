@@ -8,45 +8,39 @@ const Footer = () => {
       <div className="footer-container">
         {/* Top Grid Section */}
         <div className="footer-grid">
-          {/* Column 1: Logo */}
+          {/* Column 1: Logo & Social Media Grouped Side-by-Side */}
           <div className="footer-col-logo">
-            <div className="footer-brand-container">
-              <img src="/SecondaryIcon.png" alt="Secondary Brand Icon" className="footer-brand-logo" />
+            <div className="footer-logo-socials-wrapper">
+              <div className="footer-brand-container">
+                <img src="/SecondaryIcon.png" alt="Secondary Brand Icon" className="footer-brand-logo" />
+              </div>
+              <div className="footer-brand-socials-container">
+                <h4 className="footer-heading">SOCIAL MEDIA</h4>
+                <div className="footer-brand-socials">
+                  <a href="#" className="footer-social-link" aria-label="Instagram">
+                    <div className="footer-social-icon-circle social-instagram">
+                      <Instagram size={16} />
+                    </div>
+                    <span>Instagram</span>
+                  </a>
+                  <a href="#" className="footer-social-link" aria-label="LinkedIn">
+                    <div className="footer-social-icon-circle social-linkedin">
+                      <Linkedin size={16} />
+                    </div>
+                    <span>LinkedIn</span>
+                  </a>
+                  <a href="#" className="footer-social-link" aria-label="Facebook">
+                    <div className="footer-social-icon-circle social-facebook">
+                      <Facebook size={16} />
+                    </div>
+                    <span>Facebook</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Column 2: Social Media Platform Rows (Icon + Text) */}
-          <div className="footer-col-links">
-            <h4 className="footer-heading">SOCIAL MEDIA</h4>
-            <ul className="footer-social-list">
-              <li>
-                <a href="#" className="footer-social-link" aria-label="Instagram">
-                  <div className="footer-social-icon-circle social-instagram">
-                    <Instagram size={16} />
-                  </div>
-                  <span>Instagram</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-social-link" aria-label="LinkedIn">
-                  <div className="footer-social-icon-circle social-linkedin">
-                    <Linkedin size={16} />
-                  </div>
-                  <span>LinkedIn</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-social-link" aria-label="Facebook">
-                  <div className="footer-social-icon-circle social-facebook">
-                    <Facebook size={16} />
-                  </div>
-                  <span>Facebook</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Why Nilebyte */}
+          {/* Column 2: Why Nilebyte Disclaimer */}
           <div className="footer-col-disclaimer">
             <h4 className="footer-heading">Why Nilebyte?</h4>
             <p className="footer-disclaimer-text">

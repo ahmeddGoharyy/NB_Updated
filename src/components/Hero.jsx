@@ -11,7 +11,7 @@ const Hero = ({ loading }) => {
     return () => clearTimeout(timer);
   }, [loading]);
 
-  // Interactive Dot Grid Canvas (Static 3D Dome, Spotlight Vignette, Top Fade, Smooth Navbar Shield)
+  // Interactive Dot Grid Canvas (Static 3D Dome, Soft Spotlight Vignette, Subtle Touch-responsive Hover Dome)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -27,7 +27,7 @@ const Hero = ({ loading }) => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Mouse coordinate tracker (starts off-screen)
+    // Mouse/Touch coordinate tracker (starts off-screen)
     const mouse = {
       x: -10000,
       y: -10000,
@@ -45,8 +45,33 @@ const Hero = ({ loading }) => {
       mouse.targetY = -1000;
     };
 
+    // Mobile touch integration
+    const handleTouchStart = (e) => {
+      if (e.touches.length > 0) {
+        mouse.targetX = e.touches[0].clientX;
+        mouse.targetY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        mouse.targetX = e.touches[0].clientX;
+        mouse.targetY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      mouse.targetX = -1000;
+      mouse.targetY = -1000;
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Add mobile touch events
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     // --- Dot Grid Setup ---
     const dots = [];
@@ -86,7 +111,7 @@ const Hero = ({ loading }) => {
         targetY = mouse.targetY;
       }
 
-      // Smoothly slide the active coordinates toward the cursor
+      // Smoothly slide the active coordinates toward the pointer/touch
       if (mouse.x === -10000) {
         mouse.x = targetX;
         mouse.y = targetY;
@@ -99,8 +124,6 @@ const Hero = ({ loading }) => {
       const activeCenterY = mouse.y;
 
       // --- SMOOTH NAVBAR SHIELD INTENSITY GRADIENT ---
-      // Fade hover intensity continuously from 0% at 90px depth to 100% at 140px depth.
-      // This guarantees zero visual glitching or snaps when moving near the top!
       let hoverIntensity = 1.0;
       if (activeCenterY !== -10000) {
         hoverIntensity = Math.max(0, Math.min(1, (activeCenterY - 90) / 50));
@@ -116,16 +139,16 @@ const Hero = ({ loading }) => {
         const dy = dot.y - activeCenterY;
         const dist = Math.sqrt(dx * dx + dy * dy);
         
-        // Massive expanded active footprint (270px radius)
-        const activeRadius = 270;
+        // Dynamic active footprint: compact on mobile touch screens, spacious on desktop
+        const activeRadius = window.innerWidth <= 768 ? 130 : 270;
 
         if (dist < activeRadius) {
           const envelope = (activeRadius - dist) / activeRadius;
           
           // --- SINE-HERMITE INTERPOLATION ---
           const sinRatio = Math.sin(envelope * Math.PI / 2);
-          // Scale target active ratio smoothly by the vertical hover intensity
-          targetRatio = Math.pow(sinRatio, 1.8) * hoverIntensity;
+          // Scale target active ratio with a sharper exponent (2.6) for tighter center focus
+          targetRatio = Math.pow(sinRatio, 2.6) * hoverIntensity;
 
           // Assign dynamic, premium deep blue shades on hover entry:
           if (dot.activeRatio < 0.03) {
@@ -147,7 +170,6 @@ const Hero = ({ loading }) => {
         const sideFade = 1.0 - (sideRatio * 0.55);
 
         // --- SUBTLE VERTICAL TOP FADE ---
-        // Smoothly dims dots near the very top of the viewport under the navbar
         const topFade = Math.min(1, 0.45 + (dot.y / 150) * 0.55);
 
         // Combined horizontal and vertical vignettes
@@ -162,14 +184,14 @@ const Hero = ({ loading }) => {
               targetR = 18;
               targetG = 75;
               targetB = 179;
-              targetOpacity = 1.0;
+              targetOpacity = 0.68; // Lowered from 1.0 for subtle premium glow
               break;
             case 1: // Deep Indigo Royal Blue
             default:
               targetR = 79;
               targetG = 70;
               targetB = 229;
-              targetOpacity = 1.0;
+              targetOpacity = 0.68; // Lowered from 1.0 for subtle premium glow
               break;
           }
         }
@@ -205,6 +227,9 @@ const Hero = ({ loading }) => {
       window.removeEventListener('resize', initGrid);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
   }, []);

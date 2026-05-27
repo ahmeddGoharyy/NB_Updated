@@ -217,7 +217,7 @@ const Portfolio = () => {
       {/* Header */}
       <div className="portfolio-header">
         <h2 className="portfolio-heading">
-          Curious What We've<br />Created?
+          Curious What We've <br />Created?
         </h2>
         <p className="portfolio-subtitle">
           Explore our brand identities, platforms, and digital solutions crafted <br /> for businesses with different visions and purposes.

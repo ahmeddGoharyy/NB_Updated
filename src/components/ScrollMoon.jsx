@@ -47,28 +47,50 @@ const ScrollMoon = () => {
 
       const centerX = vw / 2;
       const centerY = vh / 2;
-      const lockedCenterY = centerY + 65; // Slightly lower center offset
+      
+      // Responsive vertical offset
+      const lockedCenterY = centerY + (vw < 768 ? 40 : 65); 
 
       // --- Starting position (sitting at the bottom part of the Hero, rising up) ---
       const startX = centerX;
-      const startY = vh * 0.75;
+      const startY = vh * (vw < 768 ? 0.68 : 0.75);
 
-      // --- Dimensions (Slightly larger terminal footprint) ---
-      const startW = 320;
-      const startH = 200;
+      // --- Dynamic Target Logo Dimensions ---
+      let logoX = centerX;
+      let logoY = centerY;
+      let logoW = (vw < 768 ? 200 : (vw < 1024 ? 280 : 360)); // Robust theme fallbacks
 
-      const maxW = 720; // Expanded width
-      const maxH = 430; // Expanded height
-
-      const circleSize = 360; // Perfect circle morph size
-
-      // --- Target Logo Dimensions ---
-      let logoX = centerX, logoY = centerY, logoW = 340;
       if (logoCircle) {
         const rect = logoCircle.getBoundingClientRect();
         logoX = rect.left + rect.width / 2;
         logoY = rect.top + rect.height / 2;
         logoW = rect.width;
+      }
+
+      // Seamless design: morph size is exactly identical to target logo width in all states!
+      const circleSize = logoW;
+
+      // --- Dynamic Dimensions for Responsive Screen Sizes ---
+      let startW, startH, maxW, maxH;
+
+      if (vw < 768) {
+        // Mobile Viewports (Safe margins, elegant taller terminal window)
+        maxW = vw - 40; // Elegant margins
+        maxH = 260; // Taller standard shape (not flat!)
+        startW = vw - 80;
+        startH = 150;
+      } else if (vw < 1024) {
+        // Tablet Viewports
+        maxW = Math.min(580, vw - 60);
+        maxH = maxW * 0.62;
+        startW = 300;
+        startH = 185;
+      } else {
+        // Desktop Viewports (Elite layout size)
+        maxW = 720;
+        maxH = 430;
+        startW = 320;
+        startH = 200;
       }
 
       let currentW, currentH, currentX, currentY;
